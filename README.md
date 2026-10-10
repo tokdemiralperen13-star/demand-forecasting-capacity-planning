@@ -9,18 +9,20 @@ Bir perakende zincirinde, gelecek talebi doğru tahmin etmek tek başına yeterl
 1. **Talep Tahmini** — XGBoost ile, lag/rolling-mean özellikleri ve takvim bilgileriyle (10 mağaza × 50 ürün, 5 yıllık günlük satış)
 2. **Kapasite Darboğazı Tespiti** — tahmini talep, sentetik üretim kapasitesiyle karşılaştırılıp aşım noktaları belirleniyor
 3. **Kaynak Optimizasyonu** — PuLP ile doğrusal programlama; kısıtsız senaryo (açığı minimize et) vs. minimum %70 servis seviyesi kısıtlı senaryo karşılaştırılıyor
+4. **SQL ile Sorgulama** — Optimizasyon sonuçları SQLite veritabanına (`capacity_plan.db`) yazılıp SQL ile analiz edildi; sorgular `queries.sql` dosyasında
 
 ## Bulgular
 - Model performansı: **MAE 6.10** (ortalama günlük satış ~60 civarı)
 - Kapasite darboğazlarının tamamı **Pazar günlerine** denk geliyor — haftalık talep döngüsüyle doğrudan ilişkili
 - Kısıtsız optimizasyon, açığı birkaç ürüne yükleyip onları tamamen stoksuz bırakıyor; %70 minimum servis kısıtı eklenince açık tüm ürünlere makul şekilde dağılıyor — gerçek kapasite planlamasında klasik bir trade-off
+- Kapasite kısıtında kesintiye uğrayan ürünlerin ortalama talebi (~110), uğramayanlardan (~86) belirgin şekilde yüksek: yüksek talepli ürünler kapasite kısıtından daha çok etkileniyor
 
 ## Kullanılan Araçlar
-Python (pandas, XGBoost, PuLP, matplotlib) — Google Colab
+Python (pandas, XGBoost, PuLP, matplotlib), SQL (SQLite) — Google Colab
 
 ## Veri
 [Kaggle - Store Item Demand Forecasting Challenge](https://www.kaggle.com/c/demand-forecasting-kernels-only)
 
 ## Sıradaki Adımlar
-- SQL ile veri katmanı ekleme
+
 - Power BI ile interaktif dashboard
