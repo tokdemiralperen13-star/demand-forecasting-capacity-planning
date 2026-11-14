@@ -11,3 +11,15 @@ SELECT
   ROUND(AVG(pred), 1) AS ortalama_talep
 FROM capacity_plan
 GROUP BY durum;
+
+-- Sorgu 3: Mağaza bazında toplam kesinti (tüm mağaza-günler)
+SELECT store, ROUND(SUM(unmet), 0) AS toplam_kesinti
+FROM full_allocation
+GROUP BY store
+ORDER BY toplam_kesinti DESC;
+
+-- Sorgu 4: Haftanın gününe göre toplam kesinti
+SELECT weekday, ROUND(SUM(unmet), 0) AS toplam_kesinti
+FROM full_allocation
+GROUP BY weekday
+ORDER BY toplam_kesinti DESC;
